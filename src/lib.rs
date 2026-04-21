@@ -1057,7 +1057,7 @@ where
         &mut self,
         frame: TxFrameHeader,
         buffer: &[u8],
-    ) -> nb::Result<Option<()>, Infallible> {
+    ) -> nb::Result<(Mailbox, Option<()>), Infallible> {
         // Safety: We have a `&mut self` and have unique access to the peripheral.
         unsafe { Tx::<I, M>::conjure().transmit(frame, buffer) }
     }
@@ -1073,7 +1073,7 @@ where
         frame: TxFrameHeader,
         buffer: &[u8],
         pending: &mut PTX,
-    ) -> nb::Result<Option<P>, Infallible>
+    ) -> nb::Result<(Mailbox, Option<P>), Infallible>
     where
         PTX: FnMut(Mailbox, TxFrameHeader, &[u32]) -> P,
     {
@@ -1266,7 +1266,7 @@ where
         &mut self,
         frame: TxFrameHeader,
         buffer: &[u8],
-    ) -> nb::Result<Option<()>, Infallible> {
+    ) -> nb::Result<(Mailbox, Option<()>), Infallible> {
         self.transmit_preserve(frame, buffer, &mut |_, _, _| ())
     }
 
@@ -1277,7 +1277,7 @@ where
         frame: TxFrameHeader,
         buffer: &[u8],
         pending: &mut PTX,
-    ) -> nb::Result<Option<P>, Infallible>
+    ) -> nb::Result<(Mailbox, Option<P>), Infallible>
     where
         PTX: FnMut(Mailbox, TxFrameHeader, &[u32]) -> P,
     {
@@ -1318,7 +1318,7 @@ where
 
         self.write_mailbox(idx, frame, buffer);
 
-        Ok(pending_frame)
+        Ok((idx, pending_frame))
     }
 
     /// Returns if the tx queue is able to accept new messages without having to cancel an existing one
