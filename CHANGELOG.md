@@ -1,10 +1,11 @@
 # Changelog
 
-## [Unreleased]
+## [v0.4.0] 2026-07-02
 
+* Implement transceiver delay compensation configuration [#57]
+* Return the mailbox used by `transmit` and `transmit_preserve` [#62]
 * Update MSRV to 1.60
 * Allow timestamp to be accessed in all modes
-* Implement transceiver delay compensation configuration
 
 ## [v0.2.1] 2024-09-04
 
